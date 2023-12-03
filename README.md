@@ -9,7 +9,8 @@
 3. [Specific Objectives](#specific-objectives)
 4. [Project Scope](#project-scope)
    - [Technical Requirements](#technical-requirements)
-
+## Link to the video demo
+https://youtu.be/rHUK7E0p9NM
 ## 1. Introduction and Motivation <a name="introduction-and-motivation"></a>
 
 Understanding and responding to customer emotions is crucial for fostering positive interactions, customer loyalty, and business prosperity. The AI-powered Customer Emotion Recognition system aims to accurately predict and interpret customer emotions during interactions, contributing to improved customer service and overall satisfaction.

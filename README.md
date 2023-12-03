@@ -137,23 +137,6 @@ The deployment model takes audio as input and utilizes signal processing techniq
 - The model analyzes the temporal and spatial patterns within the audio features.
 - The final dense layers provide predictions for the speaker's emotions.
 
-
-## Model Components
-
-...
-
-### Convolutional Layers
-...
-
-### Recurrent Layers with Attention
-...
-
-### Global Average Pooling
-...
-
-### Dense Layers
-...
-
 ## How It Works
 
 The model processes input sequences through convolutional layers to capture spatial features, followed by recurrent layers with attention mechanisms to capture temporal dependencies. Global Average Pooling is used to reduce dimensionality, and dense layers provide the final classification.

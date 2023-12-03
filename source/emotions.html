@@ -1,0 +1,156 @@
+<!-- emotion_app/templates/emotion_app/predict_emotion.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Emotion</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #chatContainer {
+            width: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #chatHeader {
+            background-color: #25d366;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #chatBody {
+            padding: 10px;
+            height: 150px;
+            overflow-y: auto;
+        }
+
+        #chatInput {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #25d366;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #stopRecording {
+            background-color: #ff3e56;
+        }
+
+        #audioPlayer {
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <div id="chatContainer">
+        <div id="chatHeader">Record Yourself</div>
+        <div id="chatBody">
+            <p id="recordingStatus"></p>
+        </div>
+        <div id="chatInput">
+            <button id="startRecording">Start Recording</button>
+            <button id="stopRecording" disabled>Stop Recording</button>
+        </div>
+    </div>
+    <audio id="audioPlayer" controls></audio>
+    
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // Function to handle the start of recording
+        function startRecording() {
+            document.getElementById('recordingStatus').innerText = 'Recording...';
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+
+                    mediaRecorder.ondataavailable = event => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        document.getElementById('recordingStatus').innerText = 'Recording stopped.';
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        document.getElementById('audioPlayer').src = audioUrl;
+                        document.getElementById('audioPlayer').style.display = 'block';
+
+                        // Submit the recorded audio for emotion prediction
+                        submitAudioForPrediction(audioBlob);
+                    };
+
+                    mediaRecorder.start();
+                    document.getElementById('startRecording').disabled = true;
+                    document.getElementById('stopRecording').disabled = false;
+                })
+                .catch(error => console.error('Error accessing microphone:', error));
+        }
+
+        // Function to handle the stop of recording
+        function stopRecording() {
+            document.getElementById('recordingStatus').innerText = 'Recording stopped.';
+            if (mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                document.getElementById('startRecording').disabled = false;
+                document.getElementById('stopRecording').disabled = true;
+            }
+        }
+
+        // Function to submit recorded audio for emotion prediction
+        function submitAudioForPrediction(audioBlob) {
+            const formData = new FormData();
+            formData.append('audio_file', audioBlob);
+
+            $.ajax({
+                url: '{% url "analyze" %}',
+                method: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+    
+                success: response => {
+                    document.getElementById('recordingStatus').innerText = 'Prediction: ' + response.emotion;
+                },
+
+                error: error => console.error('Error submitting audio:', error),
+            });
+        }
+
+        // Event listeners for start and stop recording buttons
+        document.getElementById('startRecording').addEventListener('click', startRecording);
+        document.getElementById('stopRecording').addEventListener('click', stopRecording);
+    </script>
+</body>
+</html>

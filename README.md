@@ -127,28 +127,6 @@ The deployment model takes audio as input and utilizes signal processing techniq
 4. [Project Scope](#project-scope)
    - [Technical Requirements](#technical-requirements)
 
-## 1. Introduction and Motivation <a name="introduction-and-motivation"></a>
-
-...
-
-### 1.3 Creativity and Articulation <a name="creativity-and-articulation"></a>
-
-...
-
-## 2. Problem Statement <a name="problem-statement"></a>
-
-...
-
-## 3. Specific Objectives <a name="specific-objectives"></a>
-
-...
-
-## 4. Project Scope <a name="project-scope"></a>
-
-### 4.1 Project Scope Encompasses:
-
-...
-
 **Audio Feature Extraction and Emotion Prediction:**
 - The deployment model takes audio as input.
 - Utilizes signal processing techniques and pre-processing to extract relevant features from the audio signal.
@@ -159,15 +137,6 @@ The deployment model takes audio as input and utilizes signal processing techniq
 - The model analyzes the temporal and spatial patterns within the audio features.
 - The final dense layers provide predictions for the speaker's emotions.
 
-### 4.2 Impact on Domains:
-
-...
-
-## 5. Technical Requirements <a name="technical-requirements"></a>
-
-...
-
----
 
 ## Model Components
 
@@ -199,14 +168,3 @@ The model processes input sequences through convolutional layers to capture spat
 - The model analyzes the temporal and spatial patterns within the audio features.
 - The final dense layers provide predictions for the speaker's emotions.
 
-## Requirements
-
-...
-
-## Shortcomings and Areas for Improvement
-
-...
-
-## Model Evaluation
-
-...
